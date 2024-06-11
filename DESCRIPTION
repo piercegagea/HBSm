@@ -23,3 +23,5 @@ Imports:
     cdfquantreg,
     stringr,
     truncnorm
+URL: https://github.com/piercegagea/UrnModel
+BugReports: https://github.com/piercegagea/UrnModel/issues
