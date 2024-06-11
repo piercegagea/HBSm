@@ -1,0 +1,25 @@
+Package: UrnModel
+Type: Package
+Title: HBSm Simulation
+Version: 0.9.0
+Authors@R: 
+  c(person(given = "Nicolas L.",
+           family = "Harder",
+           role = c("aut", "cph"),
+           email = "NHARDER@email.sc.edu"),
+           person(given = "Gage A.",
+           family = "Pierce",
+           role = c("aut", "cre"),
+           email = "gapierce@email.sc.edu"))
+Maintainer: Gage A. Pierce <gapierce@email.sc.edu>
+Description: A package that allows for the execution of the Hybrid Blau Space model. The Hybrid Blau Space model utilizes ecology of affiliation and cellular based automata to show changes organization membership. This package allows for importing data to be used by the model as well as allows for specification of what demographics to use, which orgs are present, as well as parameters for the model such as how many iterations you would like the model to run.
+License: GPL (>= 3)
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 7.2.2
+Imports: 
+    beepr,
+    Matrix,
+    cdfquantreg,
+    stringr,
+    truncnorm

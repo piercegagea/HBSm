@@ -1,0 +1,3 @@
+exportPattern("^[[:alpha:]]+")
+    importFrom("stats", "pt", "sd", "var")
+    importFrom("utils", "read.csv", "write.csv")
