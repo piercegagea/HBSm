@@ -4,10 +4,10 @@
 \alias{HBSmDataImp}
 \title{Hybrid Blau Model Data Import}
 \usage{
-HBSmDataImp(dataDir, nDim = 3, entities, entlist, d1lab, d2lab, d3lab)
+HBSmDataImp(dataDir, nDim = 3, entities, entlist, d1lab, d2lab, d3lab = NULL)
 }
 \arguments{
-\item{dataDir}{Location/Directory of the data you are loading in}
+\item{dataDir}{Data object you would like the function to use. Needs to be a data frame}
 
 \item{nDim}{Dimensions of your matrix. Currently the model is capable of handling two or three dimensional matrices (default = 3)}
 
@@ -22,11 +22,17 @@ HBSmDataImp(dataDir, nDim = 3, entities, entlist, d1lab, d2lab, d3lab)
 \item{d3lab}{Label for dimension 3}
 }
 \value{
-Imported data
+Object list of data and necessary objects for the simulation
 }
 \description{
 This function runs the data import script that allows users to import data that is readable by the simulation
 }
 \examples{
-urndataimp(dataDir = "C:/Users/username/Desktop/UrnModel/Data/GSS Cleaned", nDim = 3, entities=16, entlist=orgnames, d1lab = "educ", d2lab = "age", d3lab = "ic_income")
+datalist <- HBSmDataImp(dataDir = HBSmexampledat,
+nDim = 3,
+entities=16,
+entlist=orgnames,
+d1lab = "educ",
+d2lab = "age",
+d3lab = "ic_income")
 }

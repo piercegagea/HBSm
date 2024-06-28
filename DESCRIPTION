@@ -1,7 +1,7 @@
-Package: UrnModel
+Package: HBSm
 Type: Package
-Title: HBSm Simulation
-Version: 0.9.0
+Title: Hybrid Blau Space Simulation
+Version: 0.9.5
 Authors@R: 
   c(person(given = "Nicolas L.",
            family = "Harder",
@@ -12,7 +12,7 @@ Authors@R:
            role = c("aut", "cre"),
            email = "gapierce@email.sc.edu"))
 Maintainer: Gage A. Pierce <gapierce@email.sc.edu>
-Description: A package that allows for the execution of the Hybrid Blau Space model. The Hybrid Blau Space model utilizes ecology of affiliation and cellular based automata to show changes organization membership. This package allows for importing data to be used by the model as well as allows for specification of what demographics to use, which orgs are present, as well as parameters for the model such as how many iterations you would like the model to run.
+Description: Allows for the execution of the Hybrid Blau Space model. The Hybrid Blau Space model utilizes ecology of affiliation and cellular based automata to show changes organization membership. This package allows for importing data to be used by the model as well as allows for specification of what demographics to use, which orgs are present, as well as parameters for the model such as how many iterations you would like the model to run. We would like to thank the ARO for their funding of this project under grant#W911NF-24-1-0002. Furthermore, we would like to direct you to papers that utilize the model "An improved approach for ecological modeling of social phenomena in Blau space (Harder & Brashears 2023)", "Predicting organizational recruitment using a hybrid cellular model: new directions in Blau space analysis (Harder & Brashears 2020)", and “A Hybrid Cellular Model for Predicting Organizational Recruitment in a k-Dimensional Space.(Harder & Brashears 2019)”.
 License: GPL (>= 3)
 Encoding: UTF-8
 LazyData: true
@@ -23,5 +23,7 @@ Imports:
     cdfquantreg,
     stringr,
     truncnorm
-URL: https://github.com/piercegagea/UrnModel
-BugReports: https://github.com/piercegagea/UrnModel/issues
+URL: https://github.com/piercegagea/HBSm
+BugReports: https://github.com/piercegagea/HBSm/issues
+Depends: 
+    R (>= 2.10)

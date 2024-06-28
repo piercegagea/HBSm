@@ -2,7 +2,7 @@
 #'
 #' @description This function runs the data import script that allows users to import data that is readable by the simulation
 #'
-#' @param dataDir Location/Directory of the data you are loading in
+#' @param dataDir Data object you would like the function to use. Needs to be a data frame
 #' @param nDim Dimensions of your matrix. Currently the model is capable of handling two or three dimensional matrices (default = 3)
 #' @param entities Number of organizations in the model (default = 16)
 #' @param entlist list of the organization names/types
@@ -10,30 +10,37 @@
 #' @param d2lab Label for dimension 2
 #' @param d3lab Label for dimension 3
 #'
-#' @return Imported data
+#' @return Object list of data and necessary objects for the simulation
 #' @import
 #' @export
 #'
 #' @examples
-#' urndataimp(dataDir = "C:/Users/username/Desktop/UrnModel/Data/GSS Cleaned", nDim = 3, entities=16, entlist=orgnames, d1lab = "educ", d2lab = "age", d3lab = "ic_income")
+#' datalist <- HBSmDataImp(dataDir = HBSmexampledat,
+#' nDim = 3,
+#' entities=16,
+#' entlist=orgnames,
+#' d1lab = "educ",
+#' d2lab = "age",
+#' d3lab = "ic_income")
 
 #Hybrid Model v6#
 #Data Import Codes#
 #Code updates and automation - 8/30/2020#
-HBSmDataImp <- function(dataDir, nDim = 3, entities, entlist, d1lab, d2lab, d3lab) {
+HBSmDataImp <- function(dataDir, nDim = 3, entities, entlist, d1lab, d2lab, d3lab = NULL) {
   if(is.null(nDim)){
     nDim <- 3}
-  assign('nDim', nDim, envir = .GlobalEnv)
-  assign('entlist', entlist, envir = .GlobalEnv)
-  assign('entities', entities, envir = .GlobalEnv)
+  #assign('nDim', nDim, envir = .GlobalEnv)
+  #assign('entlist', entlist, envir = .GlobalEnv)
+  #assign('entities', entities, envir = .GlobalEnv)
 
 #Part 1 - Import into dataframe#
 Importdat <-data.frame()
 #GSS data#
 #Importdat <- read.csv("~/Dropbox/__Across Computer Doc Share/R Central/GSS Cleaned/GSS04_membershipdata-cleaned.csv", header = TRUE, sep = ",")
-Importdat <- read.csv(file = dataDir)
+#Importdat <- read.csv(file = dataDir)
+Importdat <- dataDir
 #"C:/Users/calfr/OneDrive/Desktop/Backup/UrnModel/Data/GSS Cleaned/GSS 1974_new - Rready.csv"
-assign('Importdat', Importdat, envir = .GlobalEnv)
+#assign('Importdat', Importdat, envir = .GlobalEnv)
 #Importdat <- read.csv("~/Dropbox/__Across Computer Doc Share/ONR Grant/Convocation 8 MP List/Conv 8 Blaunet data - session 7 - move.csv")
 #Importdat <- read.csv("~/Dropbox/SPPA dataset/SPPA_clean.csv")
 
@@ -74,7 +81,7 @@ assign('Importdat', Importdat, envir = .GlobalEnv)
 
 #Creation of demographic object
 demographics <- list(d1lab, d2lab, d3lab)
-assign('demographics', demographics, envir = .GlobalEnv)
+#assign('demographics', demographics, envir = .GlobalEnv)
 
 #Part 2 - Matrix Creation# - automation for number of dimensions - Dimension Import
 #dim1var <- as.numeric(unlist(Importdat["edu.code"])) #For Ideal Point data
@@ -82,20 +89,20 @@ dim1var <- as.numeric(unlist(Importdat[d1lab]))
 #dim1var <- as.numeric(unlist(Importdat["Educ"]))
 #dim1var <- as.numeric(unlist(Importdat["Education"]))
 dim1var <- dim1var + 1 # for if education has a zero in it. PROGRAM CAN NOT HANDLE ZERO VALUES IN DIMENSIONS!!!!!
-assign('dim1var', dim1var, envir = .GlobalEnv)
+#assign('dim1var', dim1var, envir = .GlobalEnv)
 
 d1 <- range(dim1var, na.rm = TRUE)
 
 d1
-assign('d1', d1, envir = .GlobalEnv)
+#assign('d1', d1, envir = .GlobalEnv)
 dim2var <- as.numeric(unlist(Importdat[d2lab]))
-assign('dim2var', dim2var, envir = .GlobalEnv)
+#assign('dim2var', dim2var, envir = .GlobalEnv)
 #dim2var <- as.numeric(unlist(Importdat["Age"]))
 
 d2 <- range(dim2var, na.rm = TRUE)
 
 d2
-assign('d2', d2, envir = .GlobalEnv)
+#assign('d2', d2, envir = .GlobalEnv)
 
 #dim3var <- as.numeric(unlist(Importdat["dim3var"]))
 #assistants <- as.numeric(unlist(Importdat["X..of.Assistants"]))
@@ -106,24 +113,26 @@ assign('d2', d2, envir = .GlobalEnv)
 
 if (nDim == 3) {
   dim3var <- as.numeric(unlist(Importdat[d3lab]))
-  assign('dim3var', dim3var, envir = .GlobalEnv)
+  #assign('dim3var', dim3var, envir = .GlobalEnv)
   d3 <- range(dim3var, na.rm = TRUE)
 #d3 <- range(assistants, na.rm = TRUE)
 
 d3
-assign('d3', d3, envir = .GlobalEnv)}
+#assign('d3', d3, envir = .GlobalEnv)
+}
 
 #Manually edit ranges, not needed for all ranges, check data beforehand#
 d1r <- d1[2]#-d1[1] #Education
-assign('d1r', d1r, envir = .GlobalEnv)
+#assign('d1r', d1r, envir = .GlobalEnv)
 d2r <- d2[2]#-d2[1] #Age - needs adjusted to be out in the correct range (bottom of range is the youngest age in the space)
-assign('d2r', d2r, envir = .GlobalEnv)
+#assign('d2r', d2r, envir = .GlobalEnv)
 if (nDim == 3) {d3r <- d3[2]
-assign('d3r', d3r, envir = .GlobalEnv)}#-d3[1] #dim3var# #Ideal Point adds the -d3[1]
+#assign('d3r', d3r, envir = .GlobalEnv)#-d3[1] #dim3var# #Ideal Point adds the -d3[1]
+}
 
 if (nDim == 2) {template_array <- array(0,dim=c(d1r,d2r), dimnames=NULL)} else
   {template_array <- array(0,dim=c(d1r,d2r,d3r), dimnames=NULL)}
-assign('template_array', template_array, envir = .GlobalEnv)
+#assign('template_array', template_array, envir = .GlobalEnv)
 #Number of organizations/ entities in model#
 #entities <- 13
 
@@ -138,7 +147,7 @@ OGorgs <- list()
 for(i in 1:entities) {
   OGorgs[[i]] <- template_array
 }
-assign('OGorgs', OGorgs, envir = .GlobalEnv)
+#assign('OGorgs', OGorgs, envir = .GlobalEnv)
 #Because the range for the SPPA is slightly different for age (and dim3var in a prior model attempt), cordinate locations of individuals needs to be imported for
 
 #Part 2 - Matrix Creation# - automation for number of dimensions - Dimension Import
@@ -146,39 +155,41 @@ assign('OGorgs', OGorgs, envir = .GlobalEnv)
 #tempedulev_year <- as.numeric(unlist(Importdat_2012["educ"]))
 tempedulev_year <- as.numeric(unlist(Importdat[d1lab]))
 tempedulev_year <- tempedulev_year + 1 # for if education has a zero in it. PROGRAM CAN NOT HANDLE ZERO VALUES IN DIMENSIONS!!!!!
-assign('tempedulev_year', tempedulev_year, envir = .GlobalEnv)
+#assign('tempedulev_year', tempedulev_year, envir = .GlobalEnv)
 #tempage_year <- as.numeric(unlist(Importdat_2012["age"]))
 tempage_year <- as.numeric(unlist(Importdat[d2lab]))
-assign('tempage_year', tempage_year, envir = .GlobalEnv)
+#assign('tempage_year', tempage_year, envir = .GlobalEnv)
 #income_year <- as.numeric(unlist(Importdat_2012["dim3var"]))
 if (nDim == 3) {income_year <- as.numeric(unlist(Importdat[d3lab]))
-assign('income_year', income_year, envir = .GlobalEnv)}
+#assign('income_year', income_year, envir = .GlobalEnv)
+}
 
 #Range check#
 d1_check <- range(tempedulev_year, na.rm = TRUE)
 
 d1_check
-assign('d1_check', d1_check, envir = .GlobalEnv)
+#assign('d1_check', d1_check, envir = .GlobalEnv)
 
 d2_check <- range(tempage_year, na.rm = TRUE)
 
 d2_check
-assign('d2_check', d2_check, envir = .GlobalEnv)
+#assign('d2_check', d2_check, envir = .GlobalEnv)
 
 if (nDim == 3) {d3_check <- range(income_year, na.rm = TRUE)
 
 d3_check
-assign('d3_check', d3_check, envir = .GlobalEnv)}
+#assign('d3_check', d3_check, envir = .GlobalEnv)
+}
 
 coordims1 <- as.numeric(tempedulev_year)#-d1[1]) #y coord
-assign('coordims1', coordims1, envir = .GlobalEnv)
+#assign('coordims1', coordims1, envir = .GlobalEnv)
 coordims2 <- as.numeric(tempage_year)#-d2[1]) #x coord
-assign('coordims2', coordims2, envir = .GlobalEnv)
+#assign('coordims2', coordims2, envir = .GlobalEnv)
 if (nDim == 3) { coordims3 <- as.numeric(income_year)
-assign('coordims3', coordims3, envir = .GlobalEnv)}#-d3[1]) #z coord #for ideal point data -d3[1] is needed
+#assign('coordims3', coordims3, envir = .GlobalEnv)#-d3[1]) #z coord #for ideal point data -d3[1] is needed
 #coordims3 <- as.numeric(assistants)#-d3[1]) #z coord #for ideal point data -d3[1] is needed
 #coordims3 <- as.numeric(idealpoint) #z
-
+}
 
 
 #Part 3#
@@ -191,7 +202,7 @@ p=1 #counter for the number of individuals in the dataset (lengthterm is the lim
 #Orgnames <- c("CLASSICAL","OPERA","TUNES_BAND","JAZZ","REGGAE_RAP","MOOD_DANCE","BLUES","COUNTRY","BLGRASS","ROCK_POP","FOLK","CHORAL_HYMNS","ETHNIC_LATIN")
 #Orgnames <- c("CLASSICAL","OPERA","TUNES","JAZZ","REGGAE_RAP","BLUES","BAND_PARADE_BARBER","COUNTRY","BLGRASS","ROCK","MOOD_NEW","FOLK","CHORAL_HYMNS","ETHNIC_LATIN","OTHER")
 Orgnames <- entlist
-assign('Orgnames', Orgnames, envir = .GlobalEnv)
+#assign('Orgnames', Orgnames, envir = .GlobalEnv)
 
 #print(Orgnames[o])
 
@@ -217,16 +228,16 @@ repeat{
   temporg <- Importdat[,Orgnames[o]]
 
 
-  assign('temporg', temporg, envir = .GlobalEnv)
+  #assign('temporg', temporg, envir = .GlobalEnv)
   #temporg <- Importdat[,o]
 
   logInd = temporg > 0
-  assign('logInd', logInd, envir = .GlobalEnv)
+  #assign('logInd', logInd, envir = .GlobalEnv)
   repeat{
     if(logInd[p] == TRUE){
       if (nDim == 2) {OGorgs[[i]][coordims1[p],coordims2[p]] = OGorgs[[i]][coordims1[p],coordims2[p]] + temporg[p]} else
       {OGorgs[[i]][coordims1[p],coordims2[p],coordims3[p]] = OGorgs[[i]][coordims1[p],coordims2[p],coordims3[p]] + temporg[p]}
-      assign('OGorgs', OGorgs, envir = .GlobalEnv)
+      #assign('OGorgs', OGorgs, envir = .GlobalEnv)
     }
     p = p+1
     print(p) # for trouble shooting if import is incorrect
@@ -272,8 +283,8 @@ repeat{
 sum(Reduce("+",OGorgs))
 
 sum(Reduce("+",totindi))
-assign('OGorgs', OGorgs, envir = .GlobalEnv)
-assign('totindi', totindi, envir = .GlobalEnv)
+#assign('OGorgs', OGorgs, envir = .GlobalEnv)
+#assign('totindi', totindi, envir = .GlobalEnv)
 #Orgnames <- c("CLASSICAL","OPERA","TUNES_BAND","JAZZ","REGGAE_RAP","DANCE_MOOD","BLUES","COUNTRY","BLGRASS","ROCK_POP","FOLK","CHORAL_HYMNS","ETHNIC_LATIN")
 
 #This setup code is for the SPPA dataset music consumption data#
@@ -309,6 +320,28 @@ assign('totindi', totindi, envir = .GlobalEnv)
 #sum(OGorgs[[12]])
 #sum(OGorgs[[13]])
 
-if (nDim == 2) {rm(list= ls()[!(ls() %in% c('OGorgs','entities','coordims1','coordims2','totindi','nDim','globrun','limit','mlc','errorcount','itde','checrun','maxrun','tolerance','nrange','convrange','memory','import','Binary'))])} else
-{ rm(list= ls()[!(ls() %in% c('OGorgs','entities','coordims1','coordims2','coordims3','totindi','nDim','globrun','limit','mlc','errorcount','itde','checrun','maxrun','tolerance','nrange','convrange','memory','import','Binary'))]) }
+if (nDim == 2) {rm(list= ls()[!(ls() %in% c('OGorgs','entities','coordims1','coordims2','totindi','nDim'))])} else
+{ rm(list= ls()[!(ls() %in% c('OGorgs','entities','coordims1','coordims2','coordims3','totindi','nDim'))]) }
+
+if (nDim == 2) {
+  result_list <- list(
+    OGorgs = OGorgs,
+    entities = entities,
+    coordims1 = coordims1,
+    coordims2 = coordims2,
+    totindi = totindi,
+    nDim = nDim
+  )
+} else {
+  result_list <- list(
+    OGorgs = OGorgs,
+    entities = entities,
+    coordims1 = coordims1,
+    coordims2 = coordims2,
+    coordims3 = coordims3,
+    totindi = totindi,
+    nDim = nDim
+  )
+}
+return(result_list)
 }
